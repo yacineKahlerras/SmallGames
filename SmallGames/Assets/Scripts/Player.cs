@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     SpriteRenderer sr;
     public string currentColor;
     public Color cyan, yellow, red, purple;
+    public LevelSpawner levelSpawner;
 
     private void Awake()
     {
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
         if(collision.tag == "ColorChanger")
         {
             SetRandomColor();
+            levelSpawner.SpawnLevel();
             Destroy(collision.gameObject);
             return;
         }
