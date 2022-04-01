@@ -9,30 +9,35 @@ public class Bar : MonoBehaviour
     Vector3 target;
     public bool movingRight = true;
 
+    public List<Transform> quads, quadReturnPoints;
+
     private void Start()
     {
         target = transform.position;
-        if (movingRight) target.x = rightLimit;
-        else target.x = leftLimit;
+        if (movingRight)
+        {
+            target.x = rightLimit;
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+        else
+        {
+            target.x = leftLimit;
+            if (transform.localScale.x > 0)
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(transform.position == target)
+        for (int i = 0; i < quads.Count; i++)
         {
-            if (movingRight)
+            if(quads[i].position == target)
             {
-                target.x = leftLimit;
-                movingRight = false;
+                quads[i].position = quadReturnPoints[i].position;
             }
-            else
-            {
-                target.x = rightLimit;
-                movingRight = true;
-            }
-        }
 
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            quads[i].position = Vector3.MoveTowards(quads[i].position, target, speed * Time.deltaTime);
+        }
     }
 }

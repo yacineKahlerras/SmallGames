@@ -8,24 +8,47 @@ public class Player : MonoBehaviour
     public float jumpForce = 10f;
     Rigidbody2D rb;
     SpriteRenderer sr;
+    Score score;
     public string currentColor;
     public Color cyan, yellow, red, purple;
     public LevelSpawner levelSpawner;
+    bool isMoving = false;
+    public GameObject deathParticules;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        score = FindObjectOfType<Score>();
         SetRandomColor();
     }
 
     // Update is called once per frame
     private void FixedUpdate()
     {
-        if(Input.GetButton("Jump") || Input.GetMouseButtonDown(0))
+        if(Input.GetButton("Jump"))
         {
-            rb.velocity = Vector2.up * jumpForce;
+            Move();
         }
+
+        if(Input.touchCount > 0)
+        {
+            Move();
+        }
+    }
+
+    private void Move()
+    {
+        if(!isMoving)
+        {
+            isMoving = true;
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            AudioManager.instance.Play("Start");
+            rb.velocity = Vector2.up * jumpForce;
+            return;
+        }
+        rb.velocity = Vector2.up * jumpForce;
+        AudioManager.instance.Play("Jump");
     }
 
     public void SetRandomColor()
@@ -63,13 +86,24 @@ public class Player : MonoBehaviour
             SetRandomColor();
             levelSpawner.SpawnLevel();
             Destroy(collision.gameObject);
+            score.IncreaseScore();
+            AudioManager.instance.Play("Star");
             return;
         }
 
         if(collision.tag != currentColor)
         {
-            Debug.Log("You Died.");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            StartCoroutine(GameOver());
         }
+    }
+
+    IEnumerator GameOver()
+    {
+        AudioManager.instance.Play("BallBreak");
+        sr.enabled = false;
+        rb.bodyType = RigidbodyType2D.Static;
+        Instantiate(deathParticules, transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
