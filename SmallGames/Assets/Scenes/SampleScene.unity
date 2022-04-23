@@ -1184,10 +1184,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 939244549552093746, guid: 9cb893a8bc62af24cbaba14183a60e42, type: 3}
+      propertyPath: m_Radius
+      value: 0.28
+      objectReference: {fileID: 0}
     - target: {fileID: 939244549552093748, guid: 9cb893a8bc62af24cbaba14183a60e42, type: 3}
       propertyPath: levelSpawner
       value: 
       objectReference: {fileID: 1824351001}
+    - target: {fileID: 939244549552093748, guid: 9cb893a8bc62af24cbaba14183a60e42, type: 3}
+      propertyPath: starParticules
+      value: 
+      objectReference: {fileID: 7245190816672053435, guid: 38529c9ecb7fa9f4c8032a20125ac6da, type: 3}
+    - target: {fileID: 939244549552093748, guid: 9cb893a8bc62af24cbaba14183a60e42, type: 3}
+      propertyPath: deathParticules
+      value: 
+      objectReference: {fileID: 7245190816672053435, guid: 9f470f1a1cc3bb047a423b3fd3618334, type: 3}
     - target: {fileID: 939244549552093759, guid: 9cb893a8bc62af24cbaba14183a60e42, type: 3}
       propertyPath: m_Name
       value: Player

@@ -11,15 +11,16 @@ public class Player : MonoBehaviour
     Score score;
     public string currentColor;
     public Color cyan, yellow, red, purple;
-    public LevelSpawner levelSpawner;
+    LevelSpawner levelSpawner;
     bool isMoving = false;
-    public GameObject deathParticules;
+    public GameObject deathParticules, starParticules;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         score = FindObjectOfType<Score>();
+        levelSpawner = FindObjectOfType<LevelSpawner>();
         SetRandomColor();
     }
 
@@ -85,6 +86,7 @@ public class Player : MonoBehaviour
         {
             SetRandomColor();
             levelSpawner.SpawnLevel();
+            Instantiate(starParticules, collision.transform.position, Quaternion.identity);
             Destroy(collision.gameObject);
             score.IncreaseScore();
             AudioManager.instance.Play("Star");
